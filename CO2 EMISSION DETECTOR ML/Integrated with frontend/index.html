@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car CO2 Emission Predictor</title>
+    <style>
+    
+    @import url('https://fonts.googleapis.com/css?family=Fjalla+One&display=swap');
+
+    body {
+        font-family: 'Fjalla One', sans-serif;
+        background: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/38816/image-from-rawpixel-id-2210775-jpeg.jpg") center center no-repeat;
+        background-size: cover;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+    }
+
+    .container {
+        background: #f8f4e5;
+        border-radius: 20px;
+        padding: 30px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        max-width: 500px;
+        width: 100%;
+        text-align: center;  /* Center text inside */
+        transition: transform 0.3s;
+    }
+
+    .container:hover {
+        transform: translateY(-5px);
+    }
+
+    h2 {
+        font-size: 2rem;
+        margin-bottom: 20px;
+        color: #007acc;
+    }
+
+    label {
+        display: block;
+        margin: 10px 0 5px;
+        font-weight: bold;
+    }
+
+    input, select {
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 15px;
+        border: 1px solid #bbb;
+        border-radius: 10px;
+        font-size: 16px;
+        transition: border-color 0.3s;
+        background: #f8f4e5;
+        outline: none;
+    }
+
+    input:focus, select:focus {
+        border-color: #007acc;
+    }
+
+    button {
+        width: 100%;
+        padding: 12px;
+        background-color: #ffa580;
+        border: none;
+        border-radius: 10px;
+        color: white;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        font-weight: bold;
+        box-shadow: 3px 3px 1px 1px #95a4ff, 3px 3px 1px 2px rgba(0, 0, 0, 1);
+    }
+
+    button:hover {
+        background-color: #005f99;
+    }
+
+    #error {
+        color: #ff4757;
+        font-size: 1.1rem;
+        margin-top: 20px;
+    }
+
+    #result {
+        margin-top: 20px;  /* Adds space between form and result */
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: #007acc;
+    }
+
+    ::selection {
+        background: #ffc8ff;
+    }
+
+    </style>
+    
+</head>
+<body>
+    
+    <div class="container">
+        <h2>Car CO2 Emission Predictor</h2>
+        <form id="carForm">
+            <label for="engine_size">Engine Size (cm³):</label>
+            <input type="number" id="engine_size" name="engine_size" required>
+
+            <label for="power_ps">Power (PS):</label>
+            <input type="number" id="power_ps" name="power_ps" required>
+
+            <label for="fuel">Fuel Type:</label>
+            <select id="fuel" name="fuel" required>
+                <option value="" disabled selected>Select Fuel Type</option>
+                <option value="Petrol">Petrol</option>
+                <option value="Diesel">Diesel</option>
+            </select>
+
+            <label for="transmission">Transmission Type:</label>
+            <select id="transmission" name="transmission" required>
+                <option value="" disabled selected>Select Transmission Type</option>
+                <option value="Manual">Manual</option>
+                <option value="Automatic">Automatic</option>
+            </select>
+
+            <button type="button" onclick="predictCO2()">Predict CO2 Emission</button>
+        </form>
+
+        <!-- Result/Error inside the container -->
+        <div id="result"></div>
+        <div id="error"></div>
+    </div>
+
+    <script>
+        async function predictCO2() {
+            const inputData = {
+                engine_size_cm3: document.getElementById("engine_size").value,
+                power_ps: document.getElementById("power_ps").value,
+                fuel: document.getElementById("fuel").value,
+                transmission_type: document.getElementById("transmission").value
+            };
+
+            try {
+                const response = await fetch('http://localhost:5000/predict', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(inputData)
+                });
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                const result = await response.json();
+                document.getElementById("result").innerText = 
+                    `Predicted CO2 Emissions: ${result.predicted_co2_emissions.toFixed(2)} grams per kilometer`;
+                document.getElementById("result").classList.remove('error');
+                document.getElementById("error").innerText = '';  // Clear error if prediction successful
+            } catch (error) {
+                document.getElementById("error").innerText = 
+                    'Error: Unable to predict CO2 emissions. Please try again.';
+                document.getElementById("result").innerText = '';
+                console.error('There was an error!', error);
+            }
+        }
+    </script>
+</body>
+</html>
