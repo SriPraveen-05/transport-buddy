@@ -1,4 +1,3 @@
-# AI-Based Public Transportation Optimization Project
 
 ## Overview
 This project focuses on optimizing public transportation routes and schedules using AI, machine learning models, and IoT devices. The objective is to reduce fuel consumption, minimize carbon emissions, and maximize convenience for city residents.

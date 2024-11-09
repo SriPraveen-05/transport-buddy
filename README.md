@@ -1,15 +1,11 @@
-# Hello everyone!  
-This is **TEAM GHASA** from Rajalakshmi Engineering College, Chennai.
 
-## Project Title: **Optimization of Public Transportation Efficiency**
 
 We are excited to share that we’ve made significant progress on our project. Here are the key highlights:
 
-- We’ve pushed **5 IoT models** and **4 machine learning models**, all of which are in **100% working condition**.
-- For each IoT and ML model, you will find a sample provided in their respective README files.
+- We’ve pushed  **4 machine learning models**, all of which are in **100% working condition**.
+- For each  ML model, you will find a sample provided in their respective README files.
 
-### Current Completion: **85%**
-We have successfully completed **85%** of the project and are confident that, given the opportunity to participate in an upcoming hackathon, we can deliver a fully complete product.
+
 
 ### Machine Learning Models Developed:
 1. **Route Optimization**  
